@@ -36,7 +36,7 @@ import "net/smtp"
 import "crypto/tls"
 import "bytes"
 import "os"
-import "code.google.com/p/go-imap/go1/imap"
+import "github.com/mxk/go-imap/imap"
 
 func main() {
 
