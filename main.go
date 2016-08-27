@@ -1,14 +1,17 @@
 package main
 
-import "fmt"
-import "log"
-import "time"
-import "net/mail"
-import "net/smtp"
-import "crypto/tls"
-import "bytes"
-import "os"
-import "github.com/mxk/go-imap/imap"
+import (
+	"bytes"
+	"crypto/tls"
+	"fmt"
+	"log"
+	"net/mail"
+	"net/smtp"
+	"os"
+	"time"
+
+	"github.com/mxk/go-imap/imap"
+)
 
 func main() {
 
