@@ -27,7 +27,7 @@ func main() {
 	defer c.Logout(5 * time.Second)
 
 	// Print server greeting (first response in the unilateral server data queue)
-	fmt.Println("Server says hello:", c.Data[0].Info)
+	log.Println("Server says hello:", c.Data[0].Info)
 	c.Data = nil
 
 	// Authenticate
@@ -42,13 +42,13 @@ func main() {
 
 	// Check for new unilateral server data responses
 	for _, rsp := range c.Data {
-		fmt.Println("Server data:", rsp)
+		log.Println("Server data:", rsp)
 	}
 	c.Data = nil
 
 	// Open a mailbox (synchronous command - no need for imap.Wait)
 	_, err = c.Select("INBOX", true)
-	fmt.Print("\nMailbox status:\n", c.Mailbox)
+	log.Print("\nMailbox status:\n", c.Mailbox)
 
 	for {
 
@@ -63,13 +63,13 @@ func main() {
 
 			// Process command data
 			for _, rsp = range cmd.Data {
-				fmt.Println("Idle response:", rsp)
+				log.Println("Idle response:", rsp)
 			}
 			cmd.Data = nil
 
 			// Process unilateral server data
 			for _, rsp = range c.Data {
-				fmt.Println("Server data:", rsp)
+				log.Println("Server data:", rsp)
 			}
 			c.Data = nil
 
@@ -86,7 +86,7 @@ func main() {
 		cmd, _ = c.Fetch(set, "RFC822.HEADER")
 
 		// Process responses while the command is running
-		fmt.Println("\nMessages from " + time.Now().String())
+		log.Println("Messages from " + time.Now().String())
 		for cmd.InProgress() {
 			// Wait for the next response (no timeout)
 			c.Recv(-1)
@@ -102,13 +102,13 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
-					fmt.Println("|--", addr, " ", subj)
+					log.Println("|--", addr, " ", subj)
 					if "sender@example.com" == addr {
 						msgid := msg.Header.Get("Message-ID")
 						body := "Name: John Smith\nChoice #1: Grove Lot 99\nCall me at 408-555-1234 or Email me at jsmith@example.com"
 						SendResponse(msgid, subj, addr, body)                       // send email response to originator
 						SendResponse(msgid, subj, "4085551234@txt.att.net", "done") // send txt msg to self
-						fmt.Println(msgid, " ", subj, " ", addr)
+						log.Println(msgid, " ", subj, " ", addr)
 						os.Exit(0)
 					}
 				}
@@ -117,7 +117,7 @@ func main() {
 
 			// Process unilateral server data
 			for _, rsp = range c.Data {
-				fmt.Println("Server data:", rsp)
+				log.Println("Server data:", rsp)
 			}
 			c.Data = nil
 		}
@@ -125,9 +125,9 @@ func main() {
 		// Check command completion status
 		if rsp, err := cmd.Result(imap.OK); err != nil {
 			if err == imap.ErrAborted {
-				fmt.Println("Fetch command aborted")
+				log.Println("Fetch command aborted")
 			} else {
-				fmt.Println("Fetch error:", rsp.Info)
+				log.Println("Fetch error:", rsp.Info)
 			}
 		}
 
@@ -152,7 +152,7 @@ func SendResponse(msgid string, subj string, to string, body string) {
 	message += "\r\n" + body
 
 	auth := smtp.PlainAuth("", "jsmith@example.com", "password", "smtp.gmail.com")
-	fmt.Println(message)
+	log.Println(message)
 	err := smtp.SendMail("smtp.gmail.com:587", auth, "jsmith@example.com", []string{to}, []byte(message))
 	if err != nil {
 		log.Fatal(err)
