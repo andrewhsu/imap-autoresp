@@ -135,13 +135,6 @@ func main() {
 
 }
 
-func Max(a int, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 func SendResponse(msgid string, subj string, to string, body string) {
 	header := make(map[string]string)
 	header["In-Reply-To"] = msgid
