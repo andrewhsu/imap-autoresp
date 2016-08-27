@@ -1,9 +1,9 @@
-# IMAP auto respondent
+# imap-autoresp
+
+:email: IMAP auto respondent
+
+Provided you have a [working go installation](https://golang.org/doc/install), you can download and install the package like so:
 
 ```
-bash$ mkdir -p ~/src/go # create env
-bash$ export GOPATH=~/src/go # setup env
-bash$ go get github.com/andrewhsu/imap-autoresp # get the source and deps
-bash$ go install github.com/andrewhsu/imap-autoresp # compile and install
-bash$ ~/src/go/bin/imap-autoresp # execute the program
+$ go get github.com/andrewhsu/imap-autoresp
 ```
